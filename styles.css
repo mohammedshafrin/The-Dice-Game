@@ -1,0 +1,363 @@
+/* ── Base ───────────────────────────────────────────────── */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: linear-gradient(135deg, #1a1f2e 0%, #2d3561 50%, #1a1f2e 100%);
+  min-height: 100vh;
+  font-family: 'Indie Flower', cursive;
+}
+
+/* ── Container ──────────────────────────────────────────── */
+.container {
+  width: 680px;
+  max-width: 95%;
+  margin: 0 auto;
+  padding: 30px 0 50px;
+  text-align: center;
+}
+
+/* ── Fixed Heading — never changes ──────────────────────── */
+h1 {
+  font-family: 'Lobster', cursive;
+  font-size: 5rem;
+  color: #4ECCA3;
+  text-shadow: 3px 3px 0 #1a2e26, 0 0 40px rgba(78,204,163,0.4);
+  margin-bottom: 18px;
+  letter-spacing: 2px;
+}
+
+/* ── Round Tracker ──────────────────────────────────────── */
+.round-tracker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 22px;
+}
+
+#round-display {
+  font-family: 'Indie Flower', cursive;
+  font-size: 1.3rem;
+  color: #aab4d0;
+  letter-spacing: 1px;
+}
+
+.round-dots {
+  display: flex;
+  gap: 10px;
+}
+
+.dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  border: 2px solid rgba(255,255,255,0.25);
+  transition: all 0.3s ease;
+}
+
+.dot.dot-active {
+  background: #4ECCA3;
+  border-color: #4ECCA3;
+  box-shadow: 0 0 8px rgba(78,204,163,0.7);
+}
+
+/* ── Game Box (outer container) ─────────────────────────── */
+.game-box {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 24px;
+  padding: 30px 30px 36px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+  backdrop-filter: blur(10px);
+}
+
+/* ── Scoreboard ─────────────────────────────────────────── */
+.scoreboard {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.score-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(0,0,0,0.25);
+  border: 2px solid rgba(255,255,255,0.1);
+  border-radius: 14px;
+  padding: 12px 32px;
+  transition: all 0.3s ease;
+  min-width: 130px;
+}
+
+.score-card.score-highlight {
+  border-color: #4ECCA3;
+  background: rgba(78,204,163,0.12);
+  box-shadow: 0 0 16px rgba(78,204,163,0.35);
+  transform: scale(1.05);
+}
+
+.score-label {
+  font-family: 'Indie Flower', cursive;
+  font-size: 1.1rem;
+  color: #aab4d0;
+  margin-bottom: 4px;
+}
+
+.score-value {
+  font-family: 'Lobster', cursive;
+  font-size: 3rem;
+  color: #ffffff;
+  line-height: 1;
+}
+
+.score-divider {
+  font-family: 'Lobster', cursive;
+  font-size: 2rem;
+  color: rgba(255,255,255,0.2);
+}
+
+/* ── Dice Area Box (inner) ───────────────────────────────── */
+.dice-area-box {
+  background: rgba(0,0,0,0.2);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 18px;
+  padding: 24px 20px;
+  margin-bottom: 20px;
+}
+
+.dice-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+/* ── Individual Dice Card ────────────────────────────────── */
+.dice {
+  text-align: center;
+  background: #232931;
+  border-radius: 16px;
+  padding: 10px 10px 14px;
+  width: 160px;
+  border: 2px solid rgba(255,255,255,0.08);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+
+.vs-label {
+  font-family: 'Lobster', cursive;
+  font-size: 2.6rem;
+  color: #ffffff;
+  opacity: 0.25;
+  user-select: none;
+}
+
+/* Player label inside dice card */
+.dice p {
+  font-size: 1.4rem;
+  color: #feffff;
+  font-family: 'Indie Flower', cursive;
+  background-color: #2a9e7a;
+  border-radius: 6px;
+  padding: 2px 0;
+  margin-bottom: 10px;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+img {
+  width: 82%;
+  transition: transform 0.1s;
+  display: block;
+  margin: 0 auto;
+}
+
+/* ── Dice Roll Animation ─────────────────────────────────── */
+@keyframes rollAnim {
+  0%   { transform: rotate(0deg)   scale(1);    }
+  25%  { transform: rotate(-18deg) scale(0.88); }
+  50%  { transform: rotate(18deg)  scale(1.12); }
+  75%  { transform: rotate(-8deg)  scale(0.96); }
+  100% { transform: rotate(0deg)   scale(1);    }
+}
+img.rolling { animation: rollAnim 0.45s ease; }
+
+/* ── Round Result Text ───────────────────────────────────── */
+.result-area {
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 6px;
+}
+
+.round-result-text {
+  font-family: 'Lobster', cursive;
+  font-size: 2.2rem;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+
+.result-p1   { color: #4ECCA3; text-shadow: 2px 2px 0 #1a2e26; }
+.result-p2   { color: #ff9f43; text-shadow: 2px 2px 0 #4a2e10; }
+.result-draw { color: #aab4d0; }
+
+/* ── Hint Message ────────────────────────────────────────── */
+.hint-msg {
+  font-family: 'Indie Flower', cursive;
+  font-size: 1.15rem;
+  color: #8a94b0;
+  margin-bottom: 20px;
+  min-height: 28px;
+  background: none;
+  width: auto;
+  position: static;
+  left: auto;
+  border-radius: 0;
+  padding: 0;
+}
+
+/* ── Roll Button ─────────────────────────────────────────── */
+#roll-btn {
+  padding: 16px 52px;
+  font-family: 'Lobster', cursive;
+  font-size: 2rem;
+  color: #232931;
+  background: #4ECCA3;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  box-shadow: 0 6px 0 #2a9e7a, 0 10px 24px rgba(0,0,0,0.35);
+  transition: transform 0.1s, box-shadow 0.1s, opacity 0.3s;
+  user-select: none;
+}
+
+#roll-btn:hover:not(:disabled) { background: #3bbd94; }
+
+#roll-btn:active:not(:disabled) {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 #2a9e7a, 0 4px 10px rgba(0,0,0,0.25);
+}
+
+/* ── Final Winner Overlay ────────────────────────────────── */
+.final-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10,12,20,0.88);
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.final-overlay.hidden { display: none; }
+
+.final-box {
+  background: linear-gradient(160deg, #1e2540 0%, #2d3561 100%);
+  border: 2px solid rgba(255,215,0,0.4);
+  border-radius: 28px;
+  padding: 50px 60px;
+  text-align: center;
+  box-shadow: 0 0 80px rgba(255,215,0,0.2), 0 30px 80px rgba(0,0,0,0.6);
+  animation: popIn 0.5s cubic-bezier(0.175,0.885,0.32,1.275);
+}
+
+.final-winner-label {
+  font-family: 'Lobster', cursive;
+  font-size: 3rem;
+  color: #FFD700;
+  text-shadow: 3px 3px 0 #7a5e00;
+  margin-bottom: 12px;
+  letter-spacing: 3px;
+}
+
+.final-winner-name {
+  font-family: 'Lobster', cursive;
+  font-size: 5.5rem;
+  line-height: 1.1;
+  margin-bottom: 16px;
+  animation: pulse 0.7s ease-in-out 3;
+}
+
+.winner-p1  { color: #4ECCA3; text-shadow: 4px 4px 0 #1a2e26; }
+.winner-p2  { color: #ff9f43; text-shadow: 4px 4px 0 #4a2e10; }
+.winner-tie { color: #aab4d0; text-shadow: 4px 4px 0 #2a2f3e; }
+
+.final-scores {
+  font-family: 'Indie Flower', cursive;
+  font-size: 1.4rem;
+  color: #aab4d0;
+  margin-bottom: 32px;
+}
+
+.play-again-btn {
+  padding: 14px 44px;
+  font-family: 'Lobster', cursive;
+  font-size: 1.8rem;
+  color: #232931;
+  background: #FFD700;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 6px 0 #b89b00, 0 10px 24px rgba(0,0,0,0.35);
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.play-again-btn:hover { background: #f0cc00; }
+
+.play-again-btn:active {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 #b89b00;
+}
+
+/* ── Keyframes ───────────────────────────────────────────── */
+@keyframes pulse {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+
+@keyframes popIn {
+  0%   { transform: scale(0.3); opacity: 0; }
+  80%  { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1);    opacity: 1; }
+}
+
+/* ── Celebration Overlay ─────────────────────────────────── */
+.celebration {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 999;
+  overflow: hidden;
+}
+
+.celebration.hidden { display: none; }
+
+.confetti-piece {
+  position: fixed;
+  top: -60px;
+  animation: fall linear forwards;
+  pointer-events: none;
+}
+
+@keyframes fall {
+  0%   { top: -60px; opacity: 1; transform: rotate(0deg)   translateX(0); }
+  80%  { opacity: 1; }
+  100% { top: 110vh;  opacity: 0; transform: rotate(720deg) translateX(40px); }
+}
+
+/* ── Footer ──────────────────────────────────────────────── */
+footer {
+  margin-top: 5%;
+  color: #555e78;
+  text-align: center;
+  font-family: 'Indie Flower', cursive;
+  font-size: 1rem;
+}
