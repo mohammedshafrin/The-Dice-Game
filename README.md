@@ -1,4 +1,4 @@
-# 🎲 Dicee Game
+# 🎲 Dice Game
 A beautifully styled, interactive web-based dice rolling game where two players compete across multiple rounds. Built with semantic HTML5, CSS3 transitions/animations, and vanilla JavaScript.
 Developed originally as part of the App Brewery curriculum and enhanced with structured multi-round state management.
 ---
